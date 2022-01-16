@@ -107,3 +107,13 @@ const computeUsernames = function (accounts) {
 };
 
 computeUsernames(accounts);
+
+//////////// Display balance
+
+const displayBalance = function (arr) {
+  const balance = arr.reduce((acc, el) => acc + el, 0);
+
+  labelBalance.textContent = `${balance} EUR`;
+};
+
+displayBalance(account1.movements);
