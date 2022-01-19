@@ -108,10 +108,10 @@ computeUsernames(accounts);
 
 //////////// Display balance
 
-const displayBalance = function (arr) {
-  const balance = arr.reduce((acc, el) => acc + el, 0);
+const displayBalance = function (account) {
+  account.balance = account.movements.reduce((acc, el) => acc + el, 0);
 
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${account.balance} EUR`;
 };
 
 ////////// Display summary
@@ -133,6 +133,22 @@ const displaySummary = function (account) {
     .filter(banana => banana >= 1)
     .reduce((acc, el) => acc + el, 0);
   labelSumInterest.textContent = `${sumInterest}EUR`;
+};
+
+//Update UI
+
+const updateUI = function (acc) {
+  //Display account movements
+
+  printAccountTransactions(acc.movements);
+
+  //Display balance
+
+  displayBalance(acc);
+
+  //Display summary bottom
+
+  displaySummary(acc);
 };
 
 // Event handler
@@ -165,16 +181,30 @@ btnLogin.addEventListener('click', function (e) {
 
     containerApp.style.opacity = 100;
 
-    //Display account movements
+    updateUI(loggedAccount);
+  }
+});
 
-    printAccountTransactions(loggedAccount.movements);
+//Transfer Money
 
-    //Display balance
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
 
-    displayBalance(loggedAccount.movements);
+  const receiverAccount = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+  const amount = Number(inputTransferAmount.value);
 
-    //Display summary bottom
+  inputTransferTo.value = inputTransferAmount.value = '';
 
-    displaySummary(loggedAccount);
+  if (
+    receiverAccount &&
+    amount > 0 &&
+    amount <= loggedAccount.balance &&
+    loggedAccount?.username !== receiverAccount.username
+  ) {
+    receiverAccount.movements.push(amount);
+    loggedAccount.movements.push(-amount);
+    updateUI(loggedAccount);
   }
 });
