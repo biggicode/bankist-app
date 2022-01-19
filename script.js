@@ -136,3 +136,27 @@ const displaySummary = function (arr) {
 };
 
 displaySummary(account1.movements);
+
+// Event handler
+
+let loggedAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  //Prevent from submitting
+
+  e.preventDefault();
+
+  //Log user
+  loggedAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+
+  if (loggedAccount?.pin === Number(inputLoginPin.value)) {
+    console.log('Logged in');
+    //Display header message
+
+    labelWelcome.textContent = `Welcome ${loggedAccount.owner
+      .split(' ')
+      .at(0)}!`;
+  }
+});
