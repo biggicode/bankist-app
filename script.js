@@ -223,5 +223,10 @@ btnClose.addEventListener('click', function (e) {
       account => account.username === loggedAccount.username
     );
     accounts.splice(index, 1);
+
+    //Hide UI
+
+    containerApp.style.opacity = 0;
   }
+  inputCloseUsername.value = inputLoginPin.value = '';
 });
