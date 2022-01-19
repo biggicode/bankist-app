@@ -195,7 +195,7 @@ btnTransfer.addEventListener('click', function (e) {
   );
   const amount = Number(inputTransferAmount.value);
 
-  console.log(receiverAccount, amount);
+  inputTransferTo.value = inputTransferAmount.value = '';
 
   if (
     receiverAccount &&
