@@ -185,16 +185,19 @@ btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
 
   const receiverAccount = accounts.find(
-    acc => acc.owner === inputTransferTo.value
+    acc => acc.username === inputTransferTo.value
   );
   const amount = Number(inputTransferAmount.value);
 
   console.log(receiverAccount, amount);
 
   if (
+    receiverAccount &&
     amount > 0 &&
-    amount >= loggedAccount.balance &&
+    amount <= loggedAccount.balance &&
     loggedAccount?.username !== receiverAccount.username
   ) {
+    receiverAccount.movements(amount);
+    loggedAccount.movements(-amount);
   }
 });
