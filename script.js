@@ -80,8 +80,6 @@ const printAccountTransactions = function (transactions) {
   });
 };
 
-printAccountTransactions(account1.movements);
-
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -116,8 +114,6 @@ const displayBalance = function (arr) {
   labelBalance.textContent = `${balance} EUR`;
 };
 
-displayBalance(account1.movements);
-
 ////////// Display summary
 
 const displaySummary = function (arr) {
@@ -134,8 +130,6 @@ const displaySummary = function (arr) {
     .reduce((acc, el) => acc + el, 0);
   labelSumInterest.textContent = `${sumInterest}EUR`;
 };
-
-displaySummary(account1.movements);
 
 // Event handler
 
@@ -158,5 +152,21 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome ${loggedAccount.owner
       .split(' ')
       .at(0)}!`;
+
+    //Display container
+
+    containerApp.style.opacity = 100;
+
+    //Display account movements
+
+    printAccountTransactions(loggedAccount.movements);
+
+    //Display balance
+
+    displayBalance(loggedAccount.movements);
+
+    //Display summary bottom
+
+    displaySummary(loggedAccount.movements);
   }
 });
