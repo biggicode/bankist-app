@@ -208,3 +208,16 @@ btnTransfer.addEventListener('click', function (e) {
     updateUI(loggedAccount);
   }
 });
+
+//Delete Account
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    loggedAccount.username === inputCloseUsername.value &&
+    loggedAccount.pin === Number(inputClosePin.value)
+  ) {
+    console.log('delete');
+  }
+});
