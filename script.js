@@ -116,16 +116,20 @@ const displayBalance = function (arr) {
 
 ////////// Display summary
 
-const displaySummary = function (arr) {
-  const sumIn = arr.filter(el => el > 0).reduce((acc, el) => acc + el, 0);
+const displaySummary = function (account) {
+  const sumIn = account.movements
+    .filter(el => el > 0)
+    .reduce((acc, el) => acc + el, 0);
   labelSumIn.textContent = `${sumIn}EUR`;
 
-  const sumOut = arr.filter(el => el < 0).reduce((acc, el) => acc + el, 0);
+  const sumOut = account.movements
+    .filter(el => el < 0)
+    .reduce((acc, el) => acc + el, 0);
   labelSumOut.textContent = `${Math.abs(sumOut)}EUR`;
 
-  const sumInterest = arr
+  const sumInterest = account.movements
     .filter(el => el > 0)
-    .map(interest => (interest * 1.3) / 100)
+    .map(interest => (interest * account.interestRate) / 100)
     .filter(banana => banana >= 1)
     .reduce((acc, el) => acc + el, 0);
   labelSumInterest.textContent = `${sumInterest}EUR`;
@@ -171,6 +175,6 @@ btnLogin.addEventListener('click', function (e) {
 
     //Display summary bottom
 
-    displaySummary(loggedAccount.movements);
+    displaySummary(loggedAccount);
   }
 });
