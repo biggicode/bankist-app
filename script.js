@@ -108,10 +108,10 @@ computeUsernames(accounts);
 
 //////////// Display balance
 
-const displayBalance = function (arr) {
-  const balance = arr.reduce((acc, el) => acc + el, 0);
+const displayBalance = function (account) {
+  account.balance = account.movements.reduce((acc, el) => acc + el, 0);
 
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${account.balance} EUR`;
 };
 
 ////////// Display summary
@@ -171,10 +171,30 @@ btnLogin.addEventListener('click', function (e) {
 
     //Display balance
 
-    displayBalance(loggedAccount.movements);
+    displayBalance(loggedAccount);
 
     //Display summary bottom
 
     displaySummary(loggedAccount);
+  }
+});
+
+//Transfer Money
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const receiverAccount = accounts.find(
+    acc => acc.owner === inputTransferTo.value
+  );
+  const amount = Number(inputTransferAmount.value);
+
+  console.log(receiverAccount, amount);
+
+  if (
+    amount > 0 &&
+    amount >= loggedAccount.balance &&
+    loggedAccount?.username !== receiverAccount.username
+  ) {
   }
 });
