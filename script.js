@@ -135,6 +135,22 @@ const displaySummary = function (account) {
   labelSumInterest.textContent = `${sumInterest}EUR`;
 };
 
+//Update UI
+
+const updateUI = function (acc) {
+  //Display account movements
+
+  printAccountTransactions(acc.movements);
+
+  //Display balance
+
+  displayBalance(acc);
+
+  //Display summary bottom
+
+  displaySummary(acc);
+};
+
 // Event handler
 
 let loggedAccount;
@@ -165,17 +181,7 @@ btnLogin.addEventListener('click', function (e) {
 
     containerApp.style.opacity = 100;
 
-    //Display account movements
-
-    printAccountTransactions(loggedAccount.movements);
-
-    //Display balance
-
-    displayBalance(loggedAccount);
-
-    //Display summary bottom
-
-    displaySummary(loggedAccount);
+    updateUI(loggedAccount);
   }
 });
 
@@ -197,7 +203,8 @@ btnTransfer.addEventListener('click', function (e) {
     amount <= loggedAccount.balance &&
     loggedAccount?.username !== receiverAccount.username
   ) {
-    receiverAccount.movements(amount);
-    loggedAccount.movements(-amount);
+    receiverAccount.movements.push(amount);
+    loggedAccount.movements.push(-amount);
+    updateUI(loggedAccount);
   }
 });
