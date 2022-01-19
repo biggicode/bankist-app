@@ -146,7 +146,11 @@ btnLogin.addEventListener('click', function (e) {
   );
 
   if (loggedAccount?.pin === Number(inputLoginPin.value)) {
-    console.log('Logged in');
+    //Clear inputs
+
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+
     //Display header message
 
     labelWelcome.textContent = `Welcome ${loggedAccount.owner
