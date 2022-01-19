@@ -80,8 +80,6 @@ const printAccountTransactions = function (transactions) {
   });
 };
 
-printAccountTransactions(account1.movements);
-
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -116,23 +114,67 @@ const displayBalance = function (arr) {
   labelBalance.textContent = `${balance} EUR`;
 };
 
-displayBalance(account1.movements);
-
 ////////// Display summary
 
-const displaySummary = function (arr) {
-  const sumIn = arr.filter(el => el > 0).reduce((acc, el) => acc + el, 0);
+const displaySummary = function (account) {
+  const sumIn = account.movements
+    .filter(el => el > 0)
+    .reduce((acc, el) => acc + el, 0);
   labelSumIn.textContent = `${sumIn}EUR`;
 
-  const sumOut = arr.filter(el => el < 0).reduce((acc, el) => acc + el, 0);
+  const sumOut = account.movements
+    .filter(el => el < 0)
+    .reduce((acc, el) => acc + el, 0);
   labelSumOut.textContent = `${Math.abs(sumOut)}EUR`;
 
-  const sumInterest = arr
+  const sumInterest = account.movements
     .filter(el => el > 0)
-    .map(interest => (interest * 1.3) / 100)
+    .map(interest => (interest * account.interestRate) / 100)
     .filter(banana => banana >= 1)
     .reduce((acc, el) => acc + el, 0);
   labelSumInterest.textContent = `${sumInterest}EUR`;
 };
 
-displaySummary(account1.movements);
+// Event handler
+
+let loggedAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  //Prevent from submitting
+
+  e.preventDefault();
+
+  //Log user
+  loggedAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+
+  if (loggedAccount?.pin === Number(inputLoginPin.value)) {
+    //Clear inputs
+
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+
+    //Display header message
+
+    labelWelcome.textContent = `Welcome ${loggedAccount.owner
+      .split(' ')
+      .at(0)}!`;
+
+    //Display container
+
+    containerApp.style.opacity = 100;
+
+    //Display account movements
+
+    printAccountTransactions(loggedAccount.movements);
+
+    //Display balance
+
+    displayBalance(loggedAccount.movements);
+
+    //Display summary bottom
+
+    displaySummary(loggedAccount);
+  }
+});
