@@ -247,4 +247,5 @@ btnLoan.addEventListener('click', function (e) {
 
     updateUI(loggedAccount);
   }
+  inputLoanAmount.value = '';
 });
