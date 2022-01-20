@@ -230,3 +230,21 @@ btnClose.addEventListener('click', function (e) {
   }
   inputCloseUsername.value = inputLoginPin.value = '';
 });
+
+//Request loan
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const loanAmount = Number(inputLoanAmount.value);
+
+  if (
+    loggedAccount.movements.some(mov => mov >= loanAmount * 0.1) &&
+    loanAmount > 0
+  ) {
+    //Add loan
+    loggedAccount.movements.push(loanAmount);
+
+    updateUI(loggedAccount);
+  }
+});
