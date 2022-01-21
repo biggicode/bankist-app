@@ -64,7 +64,12 @@ const inputClosePin = document.querySelector('.form__input--pin');
 const printAccountTransactions = function (transactions, sort = false) {
   containerMovements.innerHTML = '';
 
-  transactions.forEach((transaction, index) => {
+  const movements =
+    sort === true
+      ? transactions.slice().sort((first, second) => first - second)
+      : transactions;
+
+  movements.forEach((transaction, index) => {
     const typeofTransaction = transaction > 0 ? 'deposit' : 'withdrawal';
 
     const data = `
