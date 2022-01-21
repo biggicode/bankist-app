@@ -61,7 +61,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const printAccountTransactions = function (transactions) {
+const printAccountTransactions = function (transactions, sort = false) {
   containerMovements.innerHTML = '';
 
   transactions.forEach((transaction, index) => {
