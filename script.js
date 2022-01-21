@@ -254,3 +254,11 @@ btnLoan.addEventListener('click', function (e) {
   }
   inputLoanAmount.value = '';
 });
+
+let sortState = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  printAccountTransactions(loggedAccount.movements, !sortState);
+  sortState = !sortState;
+});
