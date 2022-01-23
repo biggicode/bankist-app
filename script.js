@@ -77,7 +77,7 @@ const printAccountTransactions = function (transactions, sort = false) {
         <div class="movements__type movements__type--${typeofTransaction}">
           ${index + 1} ${typeofTransaction}
         </div>
-        <div class="movements__value">${transaction}</div>
+        <div class="movements__value">${transaction.toFixed(2)}</div>
       </div>
     `;
 
@@ -116,7 +116,7 @@ computeUsernames(accounts);
 const displayBalance = function (account) {
   account.balance = account.movements.reduce((acc, el) => acc + el, 0);
 
-  labelBalance.textContent = `${account.balance} EUR`;
+  labelBalance.textContent = `${account.balance.toFixed(2)} EUR`;
 };
 
 ////////// Display summary
@@ -125,19 +125,19 @@ const displaySummary = function (account) {
   const sumIn = account.movements
     .filter(el => el > 0)
     .reduce((acc, el) => acc + el, 0);
-  labelSumIn.textContent = `${sumIn}EUR`;
+  labelSumIn.textContent = `${sumIn.toFixed(2)}EUR`;
 
   const sumOut = account.movements
     .filter(el => el < 0)
     .reduce((acc, el) => acc + el, 0);
-  labelSumOut.textContent = `${Math.abs(sumOut)}EUR`;
+  labelSumOut.textContent = `${Math.abs(sumOut).toFixed(2)}EUR`;
 
   const sumInterest = account.movements
     .filter(el => el > 0)
     .map(interest => (interest * account.interestRate) / 100)
     .filter(banana => banana >= 1)
     .reduce((acc, el) => acc + el, 0);
-  labelSumInterest.textContent = `${sumInterest}EUR`;
+  labelSumInterest.textContent = `${sumInterest.toFixed(2)}EUR`;
 };
 
 //Update UI
