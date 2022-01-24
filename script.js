@@ -163,6 +163,7 @@ let loggedAccount;
 //Fake logg in
 
 loggedAccount = account1;
+updateUI(loggedAccount);
 containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
