@@ -88,13 +88,13 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const printAccountTransactions = function (transactions, sort = false) {
+const printAccountTransactions = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
   const movements =
     sort === true
-      ? transactions.slice().sort((first, second) => first - second)
-      : transactions;
+      ? acc.movements.slice().sort((first, second) => first - second)
+      : acc.movements;
 
   movements.forEach((transaction, index) => {
     const typeofTransaction = transaction > 0 ? 'deposit' : 'withdrawal';
@@ -172,7 +172,7 @@ const displaySummary = function (account) {
 const updateUI = function (acc) {
   //Display account movements
 
-  printAccountTransactions(acc.movements);
+  printAccountTransactions(acc);
 
   //Display balance
 
@@ -292,6 +292,6 @@ let sortState = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
 
-  printAccountTransactions(loggedAccount.movements, !sortState);
+  printAccountTransactions(loggedAccount, !sortState);
   sortState = !sortState;
 });
