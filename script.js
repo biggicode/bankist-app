@@ -106,6 +106,13 @@ const formatDate = function (date, locale) {
   return new Intl.DateTimeFormat(locale).format(date);
 };
 
+const formatCurrency = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+};
+
 const printAccountTransactions = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -120,10 +127,11 @@ const printAccountTransactions = function (acc, sort = false) {
     const transactionDate = new Date(acc.movementsDates[index]);
     const outputDate = formatDate(transactionDate, acc.locale);
 
-    const internationalTransaction = new Intl.NumberFormat(acc.locale, {
-      style: 'currency',
-      currency: acc.currency,
-    }).format(transaction);
+    const internationalTransaction = formatCurrency(
+      transaction,
+      acc.locale,
+      acc.currency
+    );
 
     const data = `
       <div class="movements__row">
