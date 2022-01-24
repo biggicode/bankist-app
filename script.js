@@ -5,11 +5,25 @@
 // BANKIST APP
 
 // Data
+
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+
+  movementsDates: [
+    '2019-11-18T21:31:17.178Z',
+    '2019-12-23T07:42:02.383Z',
+    '2020-01-28T09:15:04.904Z',
+    '2020-04-01T10:17:24.185Z',
+    '2020-05-08T14:11:59.604Z',
+    '2020-05-27T17:01:17.194Z',
+    '2020-07-11T23:36:17.929Z',
+    '2020-07-12T10:51:36.790Z',
+  ],
+  currency: 'EUR',
+  locale: 'pt-PT', // de-DE
 };
 
 const account2 = {
@@ -17,6 +31,19 @@ const account2 = {
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
+
+  movementsDates: [
+    '2019-11-01T13:15:33.035Z',
+    '2019-11-30T09:48:16.867Z',
+    '2019-12-25T06:04:23.907Z',
+    '2020-01-25T14:18:46.235Z',
+    '2020-02-05T16:33:06.386Z',
+    '2020-04-10T14:43:26.374Z',
+    '2020-06-25T18:49:59.371Z',
+    '2020-07-26T12:01:20.894Z',
+  ],
+  currency: 'USD',
+  locale: 'en-US',
 };
 
 const account3 = {
@@ -61,22 +88,29 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const printAccountTransactions = function (transactions, sort = false) {
+const printAccountTransactions = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
   const movements =
     sort === true
-      ? transactions.slice().sort((first, second) => first - second)
-      : transactions;
+      ? acc.movements.slice().sort((first, second) => first - second)
+      : acc.movements;
 
   movements.forEach((transaction, index) => {
     const typeofTransaction = transaction > 0 ? 'deposit' : 'withdrawal';
+
+    const transactionDate = new Date(acc.movementsDates[index]);
+    const year = transactionDate.getFullYear();
+    const month = `${transactionDate.getMonth() + 1}`.padStart(2, 0);
+    const day = `${transactionDate.getDate()}`.padStart(2, 0);
+    const outputDate = `${day}/${month}/${year}`;
 
     const data = `
       <div class="movements__row">
         <div class="movements__type movements__type--${typeofTransaction}">
           ${index + 1} ${typeofTransaction}
         </div>
+        <div class="movements__date">${outputDate}</div>
         <div class="movements__value">${transaction.toFixed(2)}</div>
       </div>
     `;
@@ -145,7 +179,7 @@ const displaySummary = function (account) {
 const updateUI = function (acc) {
   //Display account movements
 
-  printAccountTransactions(acc.movements);
+  printAccountTransactions(acc);
 
   //Display balance
 
@@ -159,6 +193,21 @@ const updateUI = function (acc) {
 // Event handler
 
 let loggedAccount;
+
+//Fake logg in
+
+loggedAccount = account1;
+updateUI(loggedAccount);
+containerApp.style.opacity = 100;
+
+const now = new Date();
+
+const year = now.getFullYear();
+const month = `${now.getMonth() + 1}`.padStart(2, 0);
+const day = `${now.getDate()}`.padStart(2, 0);
+const hour = `${now.getHours()}`.padStart(2, 0);
+const minutes = `${now.getMinutes()}`.padStart(2, 0);
+labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
 
 btnLogin.addEventListener('click', function (e) {
   //Prevent from submitting
@@ -210,6 +259,9 @@ btnTransfer.addEventListener('click', function (e) {
   ) {
     receiverAccount.movements.push(amount);
     loggedAccount.movements.push(-amount);
+
+    loggedAccount.movementsDates.push(new Date().toISOString());
+    receiverAccount.movementsDates.push(new Date().toISOString());
     updateUI(loggedAccount);
   }
 });
@@ -249,6 +301,7 @@ btnLoan.addEventListener('click', function (e) {
   ) {
     //Add loan
     loggedAccount.movements.push(loanAmount);
+    loggedAccount.movementsDates.push(new Date().toISOString());
 
     updateUI(loggedAccount);
   }
@@ -259,6 +312,6 @@ let sortState = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
 
-  printAccountTransactions(loggedAccount.movements, !sortState);
+  printAccountTransactions(loggedAccount, !sortState);
   sortState = !sortState;
 });
