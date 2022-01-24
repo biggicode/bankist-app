@@ -91,11 +91,6 @@ const inputClosePin = document.querySelector('.form__input--pin');
 const printAccountTransactions = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const transactionDate = new Date(acc.movementsDates[i]);
-  const year = now.getFullYear();
-  const month = `${now.getMonth() + 1}`.padStart(2, 0);
-  const day = `${now.getDate()}`.padStart(2, 0);
-
   const movements =
     sort === true
       ? acc.movements.slice().sort((first, second) => first - second)
@@ -104,12 +99,18 @@ const printAccountTransactions = function (acc, sort = false) {
   movements.forEach((transaction, index) => {
     const typeofTransaction = transaction > 0 ? 'deposit' : 'withdrawal';
 
+    const transactionDate = new Date(acc.movementsDates[index]);
+    const year = transactionDate.getFullYear();
+    const month = `${transactionDate.getMonth() + 1}`.padStart(2, 0);
+    const day = `${transactionDate.getDate()}`.padStart(2, 0);
+    const outputDate = `${day}/${month}/${year}`;
+
     const data = `
       <div class="movements__row">
         <div class="movements__type movements__type--${typeofTransaction}">
           ${index + 1} ${typeofTransaction}
         </div>
-        <div class="movements__date">${transactionDate}</div>
+        <div class="movements__date">${outputDate}</div>
         <div class="movements__value">${transaction.toFixed(2)}</div>
       </div>
     `;
