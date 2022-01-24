@@ -16,11 +16,11 @@ const account1 = {
     '2019-11-18T21:31:17.178Z',
     '2019-12-23T07:42:02.383Z',
     '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2022-01-24T10:17:24.185Z',
+    '2022-01-20T14:11:59.604Z',
+    '2022-01-21T17:01:17.194Z',
+    '2022-01-22T23:36:17.929Z',
+    '2022-01-23T10:51:36.790Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -90,9 +90,13 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 const formatDate = function (date) {
   const difference = (date1, date2) =>
-    Math.abs(date1 - date2) / (1000 * 60 * 60 * 24);
+    Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
 
   const dayPassed = difference(new Date(), date);
+
+  if (dayPassed === 0) return 'Today';
+  if (dayPassed === 1) return 'Yesterday';
+  if (dayPassed <= 7) return `${dayPassed} days ago`;
 
   const year = date.getFullYear();
   const month = `${date.getMonth() + 1}`.padStart(2, 0);
