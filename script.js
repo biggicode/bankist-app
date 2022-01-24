@@ -91,6 +91,11 @@ const inputClosePin = document.querySelector('.form__input--pin');
 const printAccountTransactions = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
+  const transactionDate = new Date(acc.movementsDates[i]);
+  const year = now.getFullYear();
+  const month = `${now.getMonth() + 1}`.padStart(2, 0);
+  const day = `${now.getDate()}`.padStart(2, 0);
+
   const movements =
     sort === true
       ? acc.movements.slice().sort((first, second) => first - second)
@@ -104,6 +109,7 @@ const printAccountTransactions = function (acc, sort = false) {
         <div class="movements__type movements__type--${typeofTransaction}">
           ${index + 1} ${typeofTransaction}
         </div>
+        <div class="movements__date">${transactionDate}</div>
         <div class="movements__value">${transaction.toFixed(2)}</div>
       </div>
     `;
@@ -192,6 +198,15 @@ let loggedAccount;
 loggedAccount = account1;
 updateUI(loggedAccount);
 containerApp.style.opacity = 100;
+
+const now = new Date();
+
+const year = now.getFullYear();
+const month = `${now.getMonth() + 1}`.padStart(2, 0);
+const day = `${now.getDate()}`.padStart(2, 0);
+const hour = now.getHours();
+const minutes = now.getMinutes();
+labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
 
 btnLogin.addEventListener('click', function (e) {
   //Prevent from submitting
