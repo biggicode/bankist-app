@@ -120,13 +120,18 @@ const printAccountTransactions = function (acc, sort = false) {
     const transactionDate = new Date(acc.movementsDates[index]);
     const outputDate = formatDate(transactionDate, acc.locale);
 
+    const internationalTransaction = new Intl.NumberFormat(acc.locale, {
+      style: 'currency',
+      currency: acc.currency,
+    }).format(transaction);
+
     const data = `
       <div class="movements__row">
         <div class="movements__type movements__type--${typeofTransaction}">
           ${index + 1} ${typeofTransaction}
         </div>
         <div class="movements__date">${outputDate}</div>
-        <div class="movements__value">${transaction.toFixed(2)}</div>
+        <div class="movements__value">${internationalTransaction}</div>
       </div>
     `;
 
