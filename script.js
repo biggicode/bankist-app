@@ -177,8 +177,11 @@ computeUsernames(accounts);
 
 const displayBalance = function (account) {
   account.balance = account.movements.reduce((acc, el) => acc + el, 0);
-
-  labelBalance.textContent = `${account.balance.toFixed(2)} EUR`;
+  labelBalance.textContent = formatCurrency(
+    account.balance,
+    account.locale,
+    account.currency
+  );
 };
 
 ////////// Display summary
@@ -187,19 +190,33 @@ const displaySummary = function (account) {
   const sumIn = account.movements
     .filter(el => el > 0)
     .reduce((acc, el) => acc + el, 0);
-  labelSumIn.textContent = `${sumIn.toFixed(2)}EUR`;
+
+  labelSumIn.textContent = formatCurrency(
+    sumIn,
+    account.locale,
+    account.currency
+  );
 
   const sumOut = account.movements
     .filter(el => el < 0)
     .reduce((acc, el) => acc + el, 0);
-  labelSumOut.textContent = `${Math.abs(sumOut).toFixed(2)}EUR`;
+
+  labelSumOut.textContent = formatCurrency(
+    sumOut,
+    account.locale,
+    account.currency
+  );
 
   const sumInterest = account.movements
     .filter(el => el > 0)
     .map(interest => (interest * account.interestRate) / 100)
     .filter(banana => banana >= 1)
     .reduce((acc, el) => acc + el, 0);
-  labelSumInterest.textContent = `${sumInterest.toFixed(2)}EUR`;
+  labelSumInterest.textContent = formatCurrency(
+    sumInterest,
+    account.locale,
+    account.currency
+  );
 };
 
 //Update UI
