@@ -160,6 +160,11 @@ const updateUI = function (acc) {
 
 let loggedAccount;
 
+//Fake logg in
+
+loggedAccount = account1;
+containerApp.style.opacity = 100;
+
 btnLogin.addEventListener('click', function (e) {
   //Prevent from submitting
 
