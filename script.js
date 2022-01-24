@@ -16,11 +16,11 @@ const account1 = {
     '2019-11-18T21:31:17.178Z',
     '2019-12-23T07:42:02.383Z',
     '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2022-01-24T10:17:24.185Z',
+    '2022-01-20T14:11:59.604Z',
+    '2022-01-21T17:01:17.194Z',
+    '2022-01-22T23:36:17.929Z',
+    '2022-01-23T10:51:36.790Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -88,6 +88,24 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const formatDate = function (date, locale) {
+  const difference = (date1, date2) =>
+    Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+
+  const dayPassed = difference(new Date(), date);
+
+  if (dayPassed === 0) return 'Today';
+  if (dayPassed === 1) return 'Yesterday';
+  if (dayPassed <= 7) return `${dayPassed} days ago`;
+
+  // const year = date.getFullYear();
+  // const month = `${date.getMonth() + 1}`.padStart(2, 0);
+  // const day = `${date.getDate()}`.padStart(2, 0);
+  // return `${day}/${month}/${year}`;
+
+  return new Intl.DateTimeFormat(locale).format(date);
+};
+
 const printAccountTransactions = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -100,10 +118,7 @@ const printAccountTransactions = function (acc, sort = false) {
     const typeofTransaction = transaction > 0 ? 'deposit' : 'withdrawal';
 
     const transactionDate = new Date(acc.movementsDates[index]);
-    const year = transactionDate.getFullYear();
-    const month = `${transactionDate.getMonth() + 1}`.padStart(2, 0);
-    const day = `${transactionDate.getDate()}`.padStart(2, 0);
-    const outputDate = `${day}/${month}/${year}`;
+    const outputDate = formatDate(transactionDate, acc.locale);
 
     const data = `
       <div class="movements__row">
@@ -200,14 +215,12 @@ loggedAccount = account1;
 updateUI(loggedAccount);
 containerApp.style.opacity = 100;
 
-const now = new Date();
-
-const year = now.getFullYear();
-const month = `${now.getMonth() + 1}`.padStart(2, 0);
-const day = `${now.getDate()}`.padStart(2, 0);
-const hour = `${now.getHours()}`.padStart(2, 0);
-const minutes = `${now.getMinutes()}`.padStart(2, 0);
-labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
+// const year = now.getFullYear();
+// const month = `${now.getMonth() + 1}`.padStart(2, 0);
+// const day = `${now.getDate()}`.padStart(2, 0);
+// const hour = `${now.getHours()}`.padStart(2, 0);
+// const minutes = `${now.getMinutes()}`.padStart(2, 0);
+// labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
 
 btnLogin.addEventListener('click', function (e) {
   //Prevent from submitting
@@ -234,6 +247,22 @@ btnLogin.addEventListener('click', function (e) {
     //Display container
 
     containerApp.style.opacity = 100;
+
+    //Display date
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+      // weekday: 'long',
+    };
+
+    labelDate.textContent = new Intl.DateTimeFormat(
+      loggedAccount.locale,
+      options
+    ).format(now);
 
     updateUI(loggedAccount);
   }
