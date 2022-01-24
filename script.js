@@ -88,6 +88,19 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const formatDate = function (date) {
+  const difference = (date1, date2) =>
+    Math.abs(date1 - date2) / (1000 * 60 * 60 * 24);
+
+  const dayPassed = difference(new Date(), date);
+
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, 0);
+  const day = `${date.getDate()}`.padStart(2, 0);
+
+  return `${day}/${month}/${year}`;
+};
+
 const printAccountTransactions = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -100,10 +113,7 @@ const printAccountTransactions = function (acc, sort = false) {
     const typeofTransaction = transaction > 0 ? 'deposit' : 'withdrawal';
 
     const transactionDate = new Date(acc.movementsDates[index]);
-    const year = transactionDate.getFullYear();
-    const month = `${transactionDate.getMonth() + 1}`.padStart(2, 0);
-    const day = `${transactionDate.getDate()}`.padStart(2, 0);
-    const outputDate = `${day}/${month}/${year}`;
+    const outputDate = formatDate(transactionDate);
 
     const data = `
       <div class="movements__row">
