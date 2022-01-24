@@ -88,7 +88,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const formatDate = function (date) {
+const formatDate = function (date, locale) {
   const difference = (date1, date2) =>
     Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
 
@@ -98,11 +98,12 @@ const formatDate = function (date) {
   if (dayPassed === 1) return 'Yesterday';
   if (dayPassed <= 7) return `${dayPassed} days ago`;
 
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, 0);
-  const day = `${date.getDate()}`.padStart(2, 0);
+  // const year = date.getFullYear();
+  // const month = `${date.getMonth() + 1}`.padStart(2, 0);
+  // const day = `${date.getDate()}`.padStart(2, 0);
+  // return `${day}/${month}/${year}`;
 
-  return `${day}/${month}/${year}`;
+  return new Intl.DateTimeFormat(locale).format(date);
 };
 
 const printAccountTransactions = function (acc, sort = false) {
@@ -117,7 +118,7 @@ const printAccountTransactions = function (acc, sort = false) {
     const typeofTransaction = transaction > 0 ? 'deposit' : 'withdrawal';
 
     const transactionDate = new Date(acc.movementsDates[index]);
-    const outputDate = formatDate(transactionDate);
+    const outputDate = formatDate(transactionDate, acc.locale);
 
     const data = `
       <div class="movements__row">
