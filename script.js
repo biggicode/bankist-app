@@ -259,6 +259,9 @@ btnTransfer.addEventListener('click', function (e) {
   ) {
     receiverAccount.movements.push(amount);
     loggedAccount.movements.push(-amount);
+
+    loggedAccount.movementsDates.push(new Date().toISOString());
+    receiverAccount.movementsDates.push(new Date().toISOString());
     updateUI(loggedAccount);
   }
 });
@@ -298,6 +301,7 @@ btnLoan.addEventListener('click', function (e) {
   ) {
     //Add loan
     loggedAccount.movements.push(loanAmount);
+    loggedAccount.movementsDates.push(new Date().toISOString());
 
     updateUI(loggedAccount);
   }
