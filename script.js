@@ -5,6 +5,7 @@
 // BANKIST APP
 
 // Data
+let timer;
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -235,15 +236,31 @@ const updateUI = function (acc) {
   displaySummary(acc);
 };
 
+//Log out
+
+const loggOutTimer = function () {
+  let time = 100;
+
+  const timerFunction = function () {
+    const minutes = String(Math.trunc(time / 60)).padStart(2, '0');
+    const seconds = String(time % 60).padStart(2, '0');
+    labelTimer.textContent = `${minutes}:${seconds}`;
+    //1 sec decrease
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  };
+  timerFunction();
+  const timer = setInterval(timerFunction, 1000);
+
+  return timer;
+};
 // Event handler
 
 let loggedAccount;
-
-//Fake logg in
-
-loggedAccount = account1;
-updateUI(loggedAccount);
-containerApp.style.opacity = 100;
 
 // const year = now.getFullYear();
 // const month = `${now.getMonth() + 1}`.padStart(2, 0);
@@ -294,6 +311,8 @@ btnLogin.addEventListener('click', function (e) {
       options
     ).format(now);
 
+    if (timer) clearInterval(timer);
+    timer = loggOutTimer();
     updateUI(loggedAccount);
   }
 });
@@ -322,6 +341,10 @@ btnTransfer.addEventListener('click', function (e) {
     loggedAccount.movementsDates.push(new Date().toISOString());
     receiverAccount.movementsDates.push(new Date().toISOString());
     updateUI(loggedAccount);
+
+    //Reset timer
+    clearInterval(timer);
+    timer = loggOutTimer();
   }
 });
 
@@ -358,11 +381,17 @@ btnLoan.addEventListener('click', function (e) {
     loggedAccount.movements.some(mov => mov >= loanAmount * 0.1) &&
     loanAmount > 0
   ) {
-    //Add loan
-    loggedAccount.movements.push(loanAmount);
-    loggedAccount.movementsDates.push(new Date().toISOString());
+    setTimeout(function () {
+      //Add loan
+      loggedAccount.movements.push(loanAmount);
+      loggedAccount.movementsDates.push(new Date().toISOString());
 
-    updateUI(loggedAccount);
+      updateUI(loggedAccount);
+
+      //Reset timer
+      clearInterval(timer);
+      timer = loggOutTimer();
+    }, 2000);
   }
   inputLoanAmount.value = '';
 });
